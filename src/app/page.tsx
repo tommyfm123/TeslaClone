@@ -1,103 +1,342 @@
-import Image from "next/image";
+"use client"
+
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Montserrat } from "next/font/google"
+import { HelpCircle, Globe, User, Menu, X } from "lucide-react"
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-montserrat",
+})
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Close mobile menu when screen size changes to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && mobileMenuOpen) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    // Add event listener
+    window.addEventListener("resize", handleResize)
+
+    // Initial check
+    handleResize()
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [mobileMenuOpen])
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add("menu-open")
+    } else {
+      document.body.classList.remove("menu-open")
+    }
+
+    // Clean up on unmount
+    return () => {
+      document.body.classList.remove("menu-open")
+    }
+  }, [mobileMenuOpen])
+
+  return (
+    <div className={montserrat.className}>
+      <header className="fixed top-0 left-0 w-full z-50 bg-transparent flex justify-between items-center px-6 py-4">
+        <div>
+          <Image src="/images/tesla.png" alt="Tesla Logo" width={120} height={40} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <nav className="hidden md:block">
+          <ul className="flex space-x-6 text-white font-medium">
+            <li className="hover:opacity-80 transition cursor-pointer">Vehicles</li>
+            <li className="hover:opacity-80 transition cursor-pointer">Energy</li>
+            <li className="hover:opacity-80 transition cursor-pointer">Charging</li>
+            <li className="hover:opacity-80 transition cursor-pointer">Discover</li>
+            <li className="hover:opacity-80 transition cursor-pointer">Shop</li>
+          </ul>
+        </nav>
+
+        {/* Desktop icons - hidden on mobile */}
+        <div className="hidden md:block">
+          <ul className="flex space-x-4 text-white">
+            <li>
+              <a href="#" className="hover:opacity-80 transition">
+                <HelpCircle size={24} />
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:opacity-80 transition">
+                <Globe size={24} />
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:opacity-80 transition">
+                <User size={24} />
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Mobile menu button - right aligned */}
+        <button
+          className="md:hidden z-50 text-white"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </header>
+
+      {/* Mobile Menu with improved animation */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-black/90 backdrop-blur-md z-40 transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          } md:translate-x-full`}
+      >
+        <div className="flex flex-col p-8 pt-24 text-white">
+          <nav>
+            <ul className="flex flex-col space-y-6 text-white font-medium">
+              <li className="border-b border-white/20 pb-2">
+                <a href="#" className="block py-2 hover:text-gray-300 transition">
+                  Vehicles
+                </a>
+              </li>
+              <li className="border-b border-white/20 pb-2">
+                <a href="#" className="block py-2 hover:text-gray-300 transition">
+                  Energy
+                </a>
+              </li>
+              <li className="border-b border-white/20 pb-2">
+                <a href="#" className="block py-2 hover:text-gray-300 transition">
+                  Charging
+                </a>
+              </li>
+              <li className="border-b border-white/20 pb-2">
+                <a href="#" className="block py-2 hover:text-gray-300 transition">
+                  Discover
+                </a>
+              </li>
+              <li className="border-b border-white/20 pb-2">
+                <a href="#" className="block py-2 hover:text-gray-300 transition">
+                  Shop
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <div className="mt-8 flex flex-col space-y-4">
+            <a href="#" className="flex items-center gap-2 hover:text-gray-300 transition">
+              <HelpCircle size={20} />
+              <span>Support</span>
+            </a>
+            <a href="#" className="flex items-center gap-2 hover:text-gray-300 transition">
+              <Globe size={20} />
+              <span>Language</span>
+            </a>
+            <a href="#" className="flex items-center gap-2 hover:text-gray-300 transition">
+              <User size={20} />
+              <span>Account</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Overlay with improved handling */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <section>
+        <div className="bg-[url(/images/Model-Y-2.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-29rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Model Y</h2>
+            <p className="text-lg md:text-xl text-shadow font-medium mt-2">
+              Starting at $41,490
+              <br />
+              After $7,500 Federal Tax Credit
+            </p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/Model3Desktop.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-30rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Model 3</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Lease for $299/mo with just $1,000 down</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/Cibertruck.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="flex flex-col text-center text-white mt-[-35rem]">
+            <img src="/images/cyberlogo.png" alt="Cybertruck Logo" className="mx-auto mb-2" />
+            <p className="text-lg md:text-xl text-shadow mt-2">Revolutionary design meets unmatched capability</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/Model-X.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-28rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Model X</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Free Supercharging Offer Ending Soon</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/Model-S.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-25rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Model S</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Experience Unparalleled Performance</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/SolarPanels.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-50rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Solar Panels</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Produce Clean Energy From Your Roof</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Schedule Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/SolarRoof.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-25rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Solar Roof</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Transform Your Roof and Power Your Home</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Schedule Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/batteryTesla.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-25rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Powerwall</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Home Battery Backup for Peace of Mind</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Order Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-[url(/images/solarPanel1.avif)] bg-cover bg-center h-[110vh] flex items-center justify-center">
+          <div className="text-center text-white mt-[-15rem]">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Accessories</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Enhance Your Tesla Experience</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Shop Now
+              </button>
+              <button className="bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                View Collection
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="relative h-[110vh] w-full">
+        <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover">
+          <source src="/images/teslaVideo.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h2 className="font-bold text-5xl md:text-6xl text-shadow">Experience Tesla</h2>
+            <p className="text-lg md:text-xl text-shadow mt-2">Schedule a Demo Drive Today</p>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-6 justify-center">
+              <button className="bg-white/80 backdrop-blur-sm hover:bg-white text-black font-medium rounded py-2 px-8 transition duration-300 min-w-[200px] cursor-pointer">
+                Demo Drive
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        .text-shadow {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+      `}</style>
     </div>
-  );
+  )
 }
