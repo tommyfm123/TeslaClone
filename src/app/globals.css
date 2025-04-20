@@ -7,6 +7,5 @@ body {
 
 /* Agrega esto en tu archivo CSS */
 .text-shadow {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.37);
-  /* Puedes ajustar el valor de la sombra aquí */
+  text-shadow: 2px 2px 4px rgba(17, 17, 17, 0.5);
 }
