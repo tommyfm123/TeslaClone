@@ -199,11 +199,14 @@ export default function Home() {
       <section>
         <div className="bg-[url(/images/Cibertruck.avif)] bg-cover bg-center h-[110vh] relative">
           <div className="flex flex-col text-center text-white absolute top-[15%] sm:top-[20%] md:top-[15%] inset-x-0 px-4">
-            <img
+            <Image
               src="/images/cyberlogo.png"
               alt="Cybertruck Logo"
+              width={240} // puedes ajustar según lo que quieras
+              height={100}
               className="mx-auto mb-2 w-[180px] sm:w-[220px] md:w-[240px]"
             />
+
             <p className="text-base sm:text-lg md:text-xl text-shadow mt-2">
               Revolutionary design meets unmatched capability
             </p>
