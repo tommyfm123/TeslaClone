@@ -321,7 +321,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="relative h-[110vh] w-full">
+      {/* <div className="relative h-[110vh] w-full">
         <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover">
           <source src="/images/teslaVideo.mp4" type="video/mp4" />
         </video>
@@ -336,7 +336,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <style jsx global>{`
         . {
