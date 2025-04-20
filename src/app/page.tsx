@@ -326,7 +326,7 @@ export default function Home() {
 
       <div className="relative h-[110vh] w-full">
         <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover">
-          <source src="/images/teslaVideo.mp4" type="video/mp4" />
+          <source src="/images/tesla.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4">
